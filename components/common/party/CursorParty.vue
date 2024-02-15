@@ -32,7 +32,7 @@ const colors = [
   'text-blue-400',
   'text-yellow-400',
   'text-pink-400',
-  'text-k-accent',
+  'text-green-400',
 ]
 
 const props = defineProps<{
