@@ -41,6 +41,7 @@
 
 <script setup lang="ts">
 import { LoadDirection } from '@/composables/useListInfiniteScroll'
+import isEqual from 'lodash/isEqual'
 
 export type FetchSearchParams = {
   first: number
@@ -59,6 +60,7 @@ const props = defineProps<{
   gridSection: GridSection
   fetchSearch: FetchSearchCallback
   first: number
+  resetOnChange: Record<string, any>
 }>()
 
 const isLoading = ref(true)
@@ -148,5 +150,12 @@ onBeforeMount(() => {
   })
 })
 
-defineExpose({ resetPage })
+watch(
+  () => props.resetOnChange,
+  (value, oldValue) => {
+    if (!isEqual(value, oldValue)) {
+      resetPage()
+    }
+  },
+)
 </script>

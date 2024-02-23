@@ -16,7 +16,8 @@
       ref="infiniteGrid"
       :grid-section="gridSection"
       :fetch-search="fetchSearch"
-      :first="40">
+      :first="40"
+      :reset-on-change="queryParams">
       <template #item="{ item }">
         <NftCard :key="item.id" :nft="item" :prefix="urlPrefix" />
       </template>
@@ -35,7 +36,6 @@ import {
   FetchSearchParams,
   FetchSearchReturn,
 } from '@/components/common/InfiniteGrid.vue'
-import isEqual from 'lodash/isEqual'
 
 const gridSection = GridSection.PROFILE_GALLERY
 const defaultSort = 'blockNumber_DESC'
@@ -94,10 +94,4 @@ const fetchSearch = async ({
 
   return { items, success: true, total: total }
 }
-
-watch(queryParams, (value, oldValue) => {
-  if (!isEqual(value, oldValue)) {
-    infiniteGrid.value.resetPage()
-  }
-})
 </script>
