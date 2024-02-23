@@ -60,17 +60,12 @@ const props = defineProps<{
   gridSection: GridSection
   fetchSearch: FetchSearchCallback
   first: number
-  resetOnChange: Record<string, any>
+  resetOnChange: Record<string, string | boolean>
 }>()
 
-const isLoading = ref(true)
-const items = ref<any[]>([])
-const loadedPages = ref([] as number[])
+const { items, addItems, clearFetchResults } = useInfiniteScrollFetchSearch()
 
-function clearFetchResults() {
-  items.value = []
-  loadedPages.value = []
-}
+const isLoading = ref(true)
 
 const gotoPage = (page: number) => {
   currentPage.value = page
@@ -86,6 +81,7 @@ const gotoPage = (page: number) => {
 
 const fetchSearch = async ({
   page,
+  loadDirection = 'up',
 }: {
   page: number
   loadDirection?: LoadDirection
@@ -99,10 +95,7 @@ const fetchSearch = async ({
 
   total.value = response.total
 
-  if (!loadedPages.value.includes(page)) {
-    loadedPages.value.push(page)
-    items.value = [...items.value, ...response.items]
-  }
+  addItems({ page, entities: response.items, loadDirection })
 
   isFetchingData.value = false
 

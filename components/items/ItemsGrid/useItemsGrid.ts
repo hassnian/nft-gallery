@@ -45,8 +45,9 @@ export function useFetchSearch({
 
   const route = useRoute()
 
-  const items = ref<(NFTWithMetadata | TokenEntity)[]>([])
-  const loadedPages = ref([] as number[])
+  const { items, addItems, clearFetchResults } = useInfiniteScrollFetchSearch<
+    NFTWithMetadata | TokenEntity
+  >()
 
   const { searchParams } = useSearchParams()
   const { searchBySn } = useItemsGridQueryParams()
@@ -196,23 +197,11 @@ export function useFetchSearch({
     const { entities, count } = getQueryResults(result.value)
     total.value = count
 
-    if (!loadedPages.value.includes(page)) {
-      if (loadDirection === 'up') {
-        items.value = [...entities, ...items.value]
-      } else {
-        items.value = [...items.value, ...entities]
-      }
-      loadedPages.value.push(page)
-    }
+    addItems({ page, entities, loadDirection })
 
     isFetchingData.value = false
     isLoading.value = false
     return true
-  }
-
-  function clearFetchResults() {
-    items.value = []
-    loadedPages.value = []
   }
 
   const refetch = (search?: { [key: string]: string | number }[]) => {
