@@ -9,7 +9,7 @@ import {
   INFINITE_SCROLL_ITEM_CLASS_NAME,
 } from '@/utils/constants'
 
-type LoadDirection = 'up' | 'down'
+export type LoadDirection = 'up' | 'down'
 
 export default function ({
   defaultFirst,
