@@ -4,6 +4,7 @@ import * as fs from 'fs'
 import svgLoader from 'vite-svg-loader'
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:9090'
+const isDev = process.env.NODE_ENV === 'development'
 
 export default defineNuxtConfig({
   server: {
@@ -38,52 +39,51 @@ export default defineNuxtConfig({
       }),
     ],
     // https://github.com/nuxt/nuxt/issues/24196#issuecomment-1825484618
-    optimizeDeps:
-      process.env.NODE_ENV === 'development'
-        ? {
-            include: [
-              '@google/model-viewer',
-              '@kodadot1/minimark/common',
-              '@kodadot1/minimark/shared',
-              '@kodadot1/minimark/v1',
-              '@kodadot1/minimark/v2',
-              '@paraspell/sdk',
-              '@polkadot/api',
-              '@polkadot/api-augment',
-              '@polkadot/types/generic/AccountId',
-              '@polkadot/vue-identicon',
-              '@ramp-network/ramp-instant-sdk',
-              '@transak/transak-sdk',
-              '@unhead/vue',
-              'bn.js',
-              'chart.js',
-              'chart.js/auto',
-              'chartjs-adapter-date-fns',
-              'chartjs-plugin-zoom',
-              'date-fns/format',
-              'date-fns/formatDistanceToNow',
-              'graphql-ws',
-              'keen-slider/vue',
-              'lodash/camelCase',
-              'lodash/filter',
-              'lodash/groupBy',
-              'lodash/isEqual',
-              'lodash/orderBy',
-              'lodash/sortBy',
-              'lodash/sum',
-              'lodash/unionBy',
-              'lodash/zipWith',
-              'markdown-it',
-              'partysocket',
-              'prismjs',
-              'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace',
-              'qrcode.vue',
-              'unzipit',
-              'vue-chartjs',
-              'wavesurfer.js',
-            ],
-          }
-        : undefined,
+    optimizeDeps: isDev
+      ? {
+          include: [
+            '@google/model-viewer',
+            '@kodadot1/minimark/common',
+            '@kodadot1/minimark/shared',
+            '@kodadot1/minimark/v1',
+            '@kodadot1/minimark/v2',
+            '@paraspell/sdk',
+            '@polkadot/api',
+            '@polkadot/api-augment',
+            '@polkadot/types/generic/AccountId',
+            '@polkadot/vue-identicon',
+            '@ramp-network/ramp-instant-sdk',
+            '@transak/transak-sdk',
+            '@unhead/vue',
+            'bn.js',
+            'chart.js',
+            'chart.js/auto',
+            'chartjs-adapter-date-fns',
+            'chartjs-plugin-zoom',
+            'date-fns/format',
+            'date-fns/formatDistanceToNow',
+            'graphql-ws',
+            'keen-slider/vue',
+            'lodash/camelCase',
+            'lodash/filter',
+            'lodash/groupBy',
+            'lodash/isEqual',
+            'lodash/orderBy',
+            'lodash/sortBy',
+            'lodash/sum',
+            'lodash/unionBy',
+            'lodash/zipWith',
+            'markdown-it',
+            'partysocket',
+            'prismjs',
+            'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace',
+            'qrcode.vue',
+            'unzipit',
+            'vue-chartjs',
+            'wavesurfer.js',
+          ],
+        }
+      : undefined,
   },
 
   nitro: {
@@ -185,14 +185,16 @@ export default defineNuxtConfig({
           crossorigin: 'anonymous',
           async: true,
         },
-        {
-          // https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup
-          innerHTML: `(function(c,l,a,r,i,t,y){
+        isDev
+          ? {
+              // https://learn.microsoft.com/en-us/clarity/setup-and-installation/clarity-setup
+              innerHTML: `(function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
             t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "kksold2jal");`,
-          type: 'text/javascript',
-        },
+              type: 'text/javascript',
+            }
+          : undefined,
       ],
     },
   },
