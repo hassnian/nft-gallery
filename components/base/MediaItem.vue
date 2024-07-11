@@ -67,6 +67,8 @@ import AudioMedia from '@/components/shared/AudioMedia.vue'
 import { getMimeType, resolveMedia } from '@/utils/gallery/media'
 import { MediaType } from '@/components/rmrk/types'
 
+const KODA_PLACEHOLDER = '/Koda.svg'
+
 const props = withDefaults(
   defineProps<{
     src?: string
@@ -100,7 +102,7 @@ const props = withDefaults(
     original: false,
     isLewd: false,
     isDetail: false,
-    placeholder: '/Koda.svg',
+    placeholder: KODA_PLACEHOLDER,
     disableOperation: undefined,
     audioPlayerCover: '',
     isFullscreen: false,
@@ -143,7 +145,8 @@ const hasNormalTag = computed<boolean>(() => {
     props.enableNormalTag &&
     Boolean(props.mimeType || type.value || !props.animationSrc) && // avoid showing normal tag before type has updated
     resolveMedia(mimeType.value) !== MediaType.IFRAME &&
-    !props.isDetail
+    !props.isDetail &&
+    props.placeholder !== KODA_PLACEHOLDER
   )
 })
 const isLewdBlurredLayer = ref(props.isLewd)
