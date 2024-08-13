@@ -215,7 +215,10 @@ export const useIdentityStore = defineStore('identity', {
     },
     async fetchBalance({ address }: ChangeAddressRequest) {
       const { fetchBalance } = useBalance()
-      await fetchBalance(address)
+      const balance = await fetchBalance(address)
+      if (balance) {
+        this.setPrefixBalance(balance)
+      }
     },
     setMultiBalances({ address, chains, chainName }) {
       this.multiBalances = {
