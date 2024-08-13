@@ -12,6 +12,10 @@ export function simpleDivision(value: string | number, decimals = 0): number {
   return Number(value) / 10 ** decimals
 }
 
+export function toAmount(nativeBalance: string, decimals: number): string {
+  return String(Number(nativeBalance || 0) * Math.pow(10, -decimals))
+}
+
 function validateInput(input: number | string): void {
   const value = Number(input)
   if (Number.isNaN(value)) {

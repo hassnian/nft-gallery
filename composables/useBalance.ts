@@ -6,15 +6,19 @@ import { useIdentityStore } from '@/stores/identity'
 export default function () {
   const { urlPrefix } = usePrefix()
   const identityStore = useIdentityStore()
+  const { decimals } = useChain()
 
-  const getBalance = (_token: string) => {
+  const getNativeBalance = (_token: string) => {
     switch (urlPrefix.value) {
       default:
-        return identityStore.getAuthBalance
+        return identityStore.getAuthNativeBalance
     }
   }
 
+  const getBalance = (token: string) => toAmount(getNativeBalance(token), decimals.value)
+
   const balance = computed(() => getBalance('KSM'))
+  const nativeBalance = computed(() => getNativeBalance('KSM'))
 
   const getSubBalance = async (address: string) => {
     const { apiInstance } = useApi()
@@ -55,6 +59,7 @@ export default function () {
 
   return {
     balance,
+    nativeBalance,
     getBalance,
     getEvmBalance,
     fetchBalance,

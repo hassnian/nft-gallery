@@ -38,7 +38,7 @@ export default function (
   const fees = { ...DEFAULT_AUTO_TELEPORT_FEE_PARAMS, ...feesParams }
 
   const { apiInstance, apiInstanceByPrefix } = useApi()
-  const { balance } = useBalance()
+  const { nativeBalance: balance } = useBalance()
 
   const hasFetched = reactive({
     teleportTxFee: false,

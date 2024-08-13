@@ -120,11 +120,15 @@ export const useIdentityStore = defineStore('identity', {
     getIdentityFor: state => (address: string) => state.identities[address],
     getTokenBalanceOf: state => (tokenId: string) =>
       state.auth.tokens ? state.auth.tokens[tokenId] || '0' : '0',
-    getAuthBalance: (state) => {
+    getAuthNativeBalance: (state) => {
       const { urlPrefix } = usePrefix()
       return state.auth.balance
         ? state.auth.balance[urlPrefix.value] || '0'
         : '0'
+    },
+    getAuthBalance(): string {
+      const { decimals } = useChain()
+      return toAmount(this.getAuthNativeBalance, decimals.value)
     },
     getTotalUsd: (state) => {
       if (
